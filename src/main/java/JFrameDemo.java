@@ -78,45 +78,42 @@ class GridLayoutTest{
                 if(ele.matches("^[0-9]*$")){
                     res += Integer.valueOf(ele);
                 }
-
             }
         }else if(expression.contains("-")){
-            java.util.List<Integer> integers = new ArrayList<Integer>();
-            for(String ele:ins){
-                if(ele.matches("^[0-9]*$")){
-                    integers.add(Integer.valueOf(ele));
-                }
-            }
-            res = integers.get(0);
-            for(int i = 0;i < integers.size()-1;i++){
-                if((i + 1) < integers.size()){
-                    res -= integers.get(i+1);
-                }
-
-            }
-
-//            for(String ele:ins){
-//                if(ele.matches("^[0-9]*$")){
-//                    res = Integer.valueOf(ele);
-//
-//                }
-//
-//            }
+            res = calByOperator("-", ins);
         }else if(expression.contains("*")){
-            for(String ele:ins){
-                if(ele.matches("^[0-9]*$")){
-                    res *= Integer.valueOf(ele);
-                }
-            }
+            res = calByOperator("*", ins);
         }else if(expression.contains("/")){
-            for(String ele:ins){
-                if(ele.matches("^[0-9]*$")){
-                    res /= Integer.valueOf(ele);
+            res = calByOperator("/", ins);
+        }
+        return res;
+    }
+    public int calByOperator(String operator, String[] elements){
+        int res = 0;
+        java.util.List<Integer> integers = new ArrayList<Integer>();
+        for(String ele:elements){
+            if(ele.matches("^[0-9]*$")){
+                integers.add(Integer.valueOf(ele));
+            }
+        }
+        res = integers.get(0);
+        for(int i = 0;i < integers.size()-1;i++){
+            if((i + 1) < integers.size()){
+                if(operator.equals("+")){
+                    res += integers.get(i+1);
+                }else if(operator.equals("-")){
+                    res -= integers.get(i+1);
+                }else if(operator.equals("*")){
+                    res *= integers.get(i+1);
+                }else{
+                    res /= integers.get(i+1);
                 }
+
             }
         }
         return res;
     }
+
     public String[] genRes(JTextField textField){
         String expression = textField.getText();
         if(!parseRegex(expression)){
@@ -205,7 +202,7 @@ class GridLayoutTest{
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    public  void makeButton(String title, JFrame frame, GridBagLayout gridBagLayout, GridBagConstraints constraints, final JTextField textField)
+    public void makeButton(String title, JFrame frame, GridBagLayout gridBagLayout, GridBagConstraints constraints, final JTextField textField)
     {
         final JButton button=new JButton(title);    //创建Button对象
         button.addActionListener(new ActionListener() {
@@ -232,7 +229,6 @@ class GridLayoutTest{
                     tf.setText(textFieldContent + res);
                 }
             }
-
             public void removeUpdate(DocumentEvent e) {
 
             }
